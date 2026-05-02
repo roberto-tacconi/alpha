@@ -1,0 +1,219 @@
+services:
+  redis:
+    image: ${REDIS_IMAGE}
+    command: [ "redis-server", "--appendonly", "yes" ]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 2s
+      timeout: 1s
+      retries: 30
+    restart: unless-stopped
+
+  memgraph:
+    image: ${MEMGRAPH_IMAGE}
+    ports:
+      - "7687:7687"
+      - "7444:7444"
+    volumes:
+      - memgraphdata:/var/lib/memgraph
+      - memgraphlog:/var/log/memgraph
+    healthcheck:
+      test: [ "CMD-SHELL", "echo 'RETURN 1;' | mgconsole --host localhost --port 7687 >/dev/null 2>&1 || exit 1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+  lab:
+    image: ${LAB_IMAGE}
+    ports:
+      - "3000:3000"
+    environment:
+      QUICK_CONNECT_MG_HOST: memgraph
+    depends_on:
+      memgraph:
+        condition: service_healthy
+    restart: always
+
+  influxdb:
+    profiles: [ "testing" ]
+    image: influxdb:2.7-alpine
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUXDB_USERNAME}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUXDB_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUXDB_BUCKET}
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_TOKEN}
+    volumes:
+      - influxdbdata:/var/lib/influxdb2
+    env_file:
+      - .testing.env
+    healthcheck:
+      test: [ "CMD", "curl", "-s", "-I", "http://localhost:8086/ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+  grafana:
+    profiles: [ "testing" ]
+    image: grafana/grafana:latest
+    ports:
+      - "${GRAFANA_PORT}:3000"
+    environment:
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - DS_K6_URL=${INFLUXDB_URL}
+      - DS_K6_DB=${INFLUXDB_BUCKET}
+      - INFLUXDB_ORG=${INFLUXDB_ORG}
+      - INFLUXDB_BUCKET=${INFLUXDB_BUCKET}
+      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN}
+    volumes:
+      - grafanadata:/var/lib/grafana
+      - ./compose/grafana/provisioning/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml:ro
+      - ./compose/grafana/provisioning/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml:ro
+      - ./compose/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    env_file:
+      - .testing.env
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    restart: unless-stopped
+
+  test-orchestrator:
+    profiles: [ "testing" ]
+    build:
+      context: .
+      dockerfile: compose/test_orchestrator/Dockerfile
+    ports:
+      - "8090:8090"
+    env_file:
+      - .local.env
+      - .testing.env
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME:-alpha}
+      TEST_READY_TIMEOUT: ${TEST_READY_TIMEOUT:-30s}
+      PROJECT_DIR: ${PWD}
+    volumes:
+      - ./tests/k6:/tests:ro
+      - ./api/cyphers:/cypher:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${PWD}:${PWD}:ro
+    depends_on:
+      redis:
+        condition: service_healthy
+      memgraph:
+        condition: service_healthy
+      influxdb:
+        condition: service_healthy
+      suricatabridge:
+        condition: service_started
+      statemanager:
+        condition: service_started
+      planner:
+        condition: service_started
+      executor:
+        condition: service_started
+    restart: no
+
+  suricatabridge:
+    profiles: [ "alpha", "testing" ]
+    build:
+      context: .
+      dockerfile: compose/alpha/Dockerfile
+      target: engine-runtime
+      args:
+        GO_IMAGE: ${GO_IMAGE}
+        APP_NAME: suricatabridge
+    env_file: .local.env
+    environment:
+      CONSUMER_NAME: suricatabridge-1
+      SURICATA_ALERTS_CHANNEL: suricata:alerts
+      STREAM_SURICATA_ALERTS: suricata:alerts:stream
+    depends_on:
+      redis:
+        condition: service_healthy
+    command: [ "/app/service" ]
+    restart: unless-stopped
+
+  statemanager:
+    profiles: [ "alpha", "testing" ]
+    build:
+      context: .
+      dockerfile: compose/alpha/Dockerfile
+      target: engine-runtime
+      args:
+        GO_IMAGE: ${GO_IMAGE}
+        APP_NAME: statemanager
+    env_file: .local.env
+    environment:
+      CONSUMER_NAME: statemanager-1
+    depends_on:
+      redis:
+        condition: service_healthy
+      memgraph:
+        condition: service_healthy
+    command: [ "/app/service" ]
+    restart: unless-stopped
+
+  planner:
+    profiles: [ "alpha", "testing" ]
+    build:
+      context: .
+      dockerfile: compose/alpha/Dockerfile
+      target: planner-runtime
+      args:
+        GO_IMAGE: ${GO_IMAGE}
+        APP_NAME: planner
+    env_file: .local.env
+    environment:
+      CONSUMER_NAME: planner-1
+    volumes:
+      - ./assets/domains:${DOMAINS_DIR:-/app/domains}:ro
+      - ./data/problems:${PROBLEMS_DIR:-/app/problems}
+      - ./data/plans:${PLANS_DIR:-/app/plans}
+    depends_on:
+      redis:
+        condition: service_healthy
+      memgraph:
+        condition: service_healthy
+    command: [ "/app/service" ]
+    restart: unless-stopped
+  executor:
+    profiles: [ "alpha", "testing" ]
+    build:
+      context: .
+      dockerfile: compose/alpha/Dockerfile
+      target: engine-runtime
+      args:
+        GO_IMAGE: ${GO_IMAGE}
+        APP_NAME: executor
+    env_file:
+      - .local.env
+      - .testing.env
+    environment:
+      CONSUMER_NAME: executor-1
+    depends_on:
+      redis:
+        condition: service_healthy
+      memgraph:
+        condition: service_healthy
+    command: [ "/app/service" ]
+    restart: unless-stopped
+
+volumes:
+  redisdata:
+  memgraphdata:
+  memgraphlog:
+  plandata:
+  problemdata:
+  influxdbdata:
+  grafanadata:

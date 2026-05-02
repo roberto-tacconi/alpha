@@ -1,0 +1,5 @@
+(switch-provider track-control-system-tcs-19 electronic-steering-control-system-44 helm-order-input-20)
+(isolate ecdis-b-31)
+(rollback-image ecdis-b-31)
+(reconnect_recovery ecdis-b-31)
+; cost = 90 (general cost)

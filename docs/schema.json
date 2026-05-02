@@ -1,0 +1,523 @@
+{
+  "style": {
+    "font-family": "Fira Code",
+    "background-color": "#2B2B2B",
+    "background-image": "",
+    "background-size": "100%",
+    "node-color": "#2B2B2B",
+    "border-width": 2,
+    "border-color": "#A6B7C8",
+    "radius": 90,
+    "node-padding": 5,
+    "node-margin": 2,
+    "outside-position": "auto",
+    "node-icon-image": "",
+    "node-background-image": "",
+    "icon-position": "inside",
+    "icon-size": 64,
+    "caption-position": "inside",
+    "caption-max-width": 200,
+    "caption-color": "#A6B7C8",
+    "caption-font-size": 18,
+    "caption-font-weight": "normal",
+    "label-position": "inside",
+    "label-display": "bare",
+    "label-color": "#A6B7C8",
+    "label-background-color": "#ffffff",
+    "label-border-color": "#000000",
+    "label-border-width": 4,
+    "label-font-size": 18,
+    "label-padding": 5,
+    "label-margin": 4,
+    "directionality": "directed",
+    "detail-position": "inline",
+    "detail-orientation": "parallel",
+    "arrow-width": 2,
+    "arrow-color": "#A6B7C8",
+    "margin-start": 0,
+    "margin-end": 0,
+    "margin-peer": 20,
+    "attachment-start": "normal",
+    "attachment-end": "normal",
+    "relationship-icon-image": "",
+    "type-color": "#A6B7C8",
+    "type-background-color": "#2B2B2B",
+    "type-border-color": "#000000",
+    "type-border-width": 0,
+    "type-font-size": 18,
+    "type-padding": 5,
+    "property-position": "inside",
+    "property-alignment": "colon",
+    "property-color": "#A6B7C8",
+    "property-font-size": 18,
+    "property-font-weight": "normal"
+  },
+  "nodes": [
+    {
+      "id": "n0",
+      "position": {
+        "x": 135,
+        "y": 841.0481336606401
+      },
+      "caption": "",
+      "labels": [
+        "GraphMeta"
+      ],
+      "properties": {
+        "id": "Integer [id]",
+        "v_current": "Integer"
+      },
+      "style": {}
+    },
+    {
+      "id": "n1",
+      "position": {
+        "x": 135,
+        "y": 540.1244418861263
+      },
+      "caption": "",
+      "labels": [
+        "Ship"
+      ],
+      "properties": {
+        "id": "Integer [id]"
+      },
+      "style": {}
+    },
+    {
+      "id": "n2",
+      "position": {
+        "x": 658.075395695159,
+        "y": 540.1244418861263
+      },
+      "caption": "",
+      "labels": [
+        "Context"
+      ],
+      "properties": {
+        "id": "Integer [id]",
+        "name": "String [unique]"
+      },
+      "style": {}
+    },
+    {
+      "id": "n3",
+      "position": {
+        "x": 1248.1867827250853,
+        "y": 1241.5761956101098
+      },
+      "caption": "",
+      "labels": [
+        "Service"
+      ],
+      "properties": {
+        "id": "Integer [id]",
+        "name": "String [unique]"
+      },
+      "style": {}
+    },
+    {
+      "id": "n4",
+      "position": {
+        "x": 1248.1867827250853,
+        "y": 1811.7766399546697
+      },
+      "caption": "",
+      "labels": [
+        "Resource"
+      ],
+      "properties": {
+        "id": "Integer [id]",
+        "name": "String [unique]"
+      },
+      "style": {}
+    },
+    {
+      "id": "n5",
+      "position": {
+        "x": 135,
+        "y": 1343.4205607368567
+      },
+      "caption": "",
+      "labels": [
+        "Resource",
+        "Analog"
+      ],
+      "properties": {},
+      "style": {}
+    },
+    {
+      "id": "n6",
+      "position": {
+        "x": 135,
+        "y": 1092.2343471987483
+      },
+      "caption": "",
+      "labels": [
+        "Resource",
+        "Digital",
+        "Device"
+      ],
+      "properties": {},
+      "style": {}
+    },
+    {
+      "id": "n7",
+      "position": {
+        "x": 135,
+        "y": 1594.6067742749651
+      },
+      "caption": "",
+      "labels": [
+        "Resource",
+        "Digital",
+        "NetworkDevice"
+      ],
+      "properties": {},
+      "style": {}
+    },
+    {
+      "id": "n8",
+      "position": {
+        "x": 2069.832364610259,
+        "y": 708.3380273616319
+      },
+      "caption": "",
+      "labels": [
+        "Resource",
+        "Digital"
+      ],
+      "properties": {
+        "purdue_lvl": "Integer [0-5]",
+        "has_clean_img": "Boolean",
+        "image_size_kb": "Integer >= 0",
+        "supports_remote_reimage": "Boolean",
+        "is_quarantined": "Boolean"
+      },
+      "style": {}
+    },
+    {
+      "id": "n9",
+      "position": {
+        "x": 2069.832364610259,
+        "y": 299.15488012385197
+      },
+      "caption": "",
+      "labels": [
+        "DigitalState"
+      ],
+      "properties": {
+        "uuid": "String [id]",
+        "v_from": "Integer ",
+        "v_to": "Integer [optional]",
+        "is_compromised": "Boolean",
+        "is_powered": "Boolean"
+      },
+      "style": {}
+    },
+    {
+      "id": "n10",
+      "position": {
+        "x": 2069.832364610259,
+        "y": 1117.5211745994118
+      },
+      "caption": "",
+      "labels": [
+        "NetworkInterface"
+      ],
+      "properties": {
+        "id": "Integer [id]",
+        "name": "string",
+        "mac_address": "String [unique]",
+        "max_bandwidth_bps": "Integer > 0",
+        "type": "[\"data\", \"management\", \"hybrid\"]"
+      },
+      "style": {}
+    },
+    {
+      "id": "n11",
+      "position": {
+        "x": 2754.613412393007,
+        "y": 1117.5211745994118
+      },
+      "caption": "",
+      "labels": [
+        "NetworkInterfaceState"
+      ],
+      "properties": {
+        "uuid": "String [id]",
+        "v_from": "Integer",
+        "v_to": "Integer [optional]"
+      },
+      "style": {}
+    },
+    {
+      "id": "n12",
+      "position": {
+        "x": 2069.832364610259,
+        "y": 1802.3022223821597
+      },
+      "caption": "",
+      "labels": [
+        "Vlan"
+      ],
+      "properties": {
+        "id": "Integer [id]",
+        "name": "String [unique]"
+      },
+      "style": {}
+    },
+    {
+      "id": "n13",
+      "position": {
+        "x": 1475.2747302625653,
+        "y": 540.1244418861263
+      },
+      "caption": "",
+      "labels": [
+        "Capability"
+      ],
+      "properties": {
+        "id": "Integer [id]",
+        "name": "String [unique]"
+      },
+      "style": {}
+    },
+    {
+      "id": "n14",
+      "position": {
+        "x": 1066.6750629788621,
+        "y": 90
+      },
+      "caption": "",
+      "labels": [
+        "Capability",
+        "Child"
+      ],
+      "properties": {},
+      "style": {}
+    },
+    {
+      "id": "n15",
+      "position": {
+        "x": 1066.6750629788621,
+        "y": 540.1244418861263
+      },
+      "caption": "",
+      "labels": [
+        "Capability",
+        "Root"
+      ],
+      "properties": {
+        "macra_safety_effects": "map[string]Integer[3,15]"
+      },
+      "style": {}
+    }
+  ],
+  "relationships": [
+    {
+      "id": "n0",
+      "fromId": "n1",
+      "toId": "n2",
+      "type": "ELIGIBLE_FOR_CONTEXT",
+      "properties": {},
+      "style": {
+        "detail-position": "above"
+      }
+    },
+    {
+      "id": "n1",
+      "fromId": "n1",
+      "toId": "n2",
+      "type": "CURRENT_CONTEXT",
+      "properties": {},
+      "style": {
+        "detail-position": "below"
+      }
+    },
+    {
+      "id": "n2",
+      "fromId": "n8",
+      "toId": "n9",
+      "type": "HAS_STATE",
+      "properties": {},
+      "style": {}
+    },
+    {
+      "id": "n3",
+      "fromId": "n8",
+      "toId": "n9",
+      "type": "CURRENT_STATE",
+      "properties": {},
+      "style": {}
+    },
+    {
+      "id": "n4",
+      "fromId": "n8",
+      "toId": "n10",
+      "type": "HAS_INTERFACE",
+      "properties": {},
+      "style": {}
+    },
+    {
+      "id": "n5",
+      "fromId": "n10",
+      "toId": "n11",
+      "type": "HAS_STATE",
+      "properties": {},
+      "style": {}
+    },
+    {
+      "id": "n6",
+      "fromId": "n10",
+      "toId": "n11",
+      "type": "CURRENT_STATE",
+      "properties": {},
+      "style": {}
+    },
+    {
+      "id": "n7",
+      "fromId": "n10",
+      "toId": "n12",
+      "type": "EFFECTIVE_IN",
+      "properties": {
+        "ipv4_address": "String"
+      },
+      "style": {
+        "detail-position": "below"
+      }
+    },
+    {
+      "id": "n8",
+      "fromId": "n10",
+      "toId": "n12",
+      "type": "CONFIGURED_IN",
+      "properties": {
+        "static_ipv4_address": "String [optional]"
+      },
+      "style": {
+        "detail-position": "above"
+      }
+    },
+    {
+      "id": "n9",
+      "fromId": "n3",
+      "toId": "n13",
+      "type": "REQUIRES",
+      "properties": {},
+      "style": {
+        "detail-position": "inline"
+      }
+    },
+    {
+      "id": "n10",
+      "fromId": "n4",
+      "toId": "n3",
+      "type": "CAN_HOST",
+      "properties": {
+        "migration_time_sec": "Integer > 0",
+        "is_primary": "Bool"
+      },
+      "style": {
+        "detail-position": "below"
+      }
+    },
+    {
+      "id": "n11",
+      "fromId": "n3",
+      "toId": "n3",
+      "type": "DEPENDS_ON",
+      "properties": {
+        "protocol": "String [optional]",
+        "dst_port": "Integer [1,65535]",
+        "src_port": "Integer [1,65535] [optional]"
+      },
+      "style": {}
+    },
+    {
+      "id": "n12",
+      "fromId": "n3",
+      "toId": "n4",
+      "type": "HOSTED_ON",
+      "properties": {},
+      "style": {
+        "detail-position": "below"
+      }
+    },
+    {
+      "id": "n13",
+      "fromId": "n10",
+      "toId": "n10",
+      "type": "FIREWALL_RULE",
+      "properties": {
+        "protocol": "String [optional]",
+        "src_port": "Integer [1,65535] [optional]",
+        "dst_port": "Integer [1,65535] [optional]",
+        "action": "[\"block\", \"drop\", \"allow\"]"
+      },
+      "style": {}
+    },
+    {
+      "id": "n14",
+      "fromId": "n10",
+      "toId": "n10",
+      "type": "LINK",
+      "properties": {},
+      "style": {}
+    },
+    {
+      "id": "n15",
+      "fromId": "n11",
+      "toId": "n10",
+      "type": "ANOMALOUS_COMMUNICATION",
+      "properties": {
+        "v_first_seen": "Integer",
+        "v_last_seen": "Integer",
+        "protocol": "String [optional]",
+        "signature": "String [optional]",
+        "src_port": "Integer [1,65535] [optional]",
+        "dst_port": "Integer [1,65535] [optional]"
+      },
+      "style": {
+        "detail-position": "below"
+      }
+    },
+    {
+      "id": "n16",
+      "fromId": "n13",
+      "toId": "n3",
+      "type": "CAN_BE_PROVIDED",
+      "properties": {
+        "context_status": "map[string]Integer[-1,1]",
+        "operational_cost": "Integer[1-4]"
+      },
+      "style": {
+        "detail-position": "below"
+      }
+    },
+    {
+      "id": "n17",
+      "fromId": "n15",
+      "toId": "n3",
+      "type": "IS_PROVIDED",
+      "properties": {},
+      "style": {}
+    },
+    {
+      "id": "n18",
+      "fromId": "n15",
+      "toId": "n2",
+      "type": "CRITICAL_IN",
+      "properties": {},
+      "style": {}
+    },
+    {
+      "id": "n19",
+      "fromId": "n14",
+      "toId": "n15",
+      "type": "PART_OF",
+      "properties": {},
+      "style": {}
+    }
+  ]
+}
